@@ -4,7 +4,7 @@
 #include <vector>
 #include <sstream>
 
-
+//TODO ADD PROTOTYPES ABOVE MAIN, ALL FUNCS BELOW
 
 std::pair<std::vector<std::vector<int> >, std::vector<std::vector<int> > > separateMatrix(const std::vector<std::vector<int> >& inputMatrix, int n) {
     // Check if the input matrix contains enough rows
@@ -57,17 +57,21 @@ std::vector<std::vector<int> > addMatrix(const std::vector<std::vector<int> >& m
     return newmatrix;
 }
 
-std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
-    int numRows = matrix1.size();
-    int numCols = matrix2[0].size();
+std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& A, const std::vector<std::vector<int> >& B) {
+    int numRowsA = A.size();
+    int numColsA = A[0].size();
+    int numColsB = B[0].size();
 
-    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+    std::vector<std::vector<int> > newmatrix(numRowsA, std::vector<int>(numColsB, 0));
 
-    for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; ++j) {
-            newmatrix[i][j] = matrix1[i][j] * matrix2[i][j];
+    for (int i = 0; i < numRowsA; i++) {
+        for (int j = 0; j < numColsB; j++) {
+            for (int k = 0; k < numColsA; k++) {
+                newmatrix[i][j] += A[i][k] * B[k][j];
+            }
         }
     }
+
     return newmatrix;
 }
 
