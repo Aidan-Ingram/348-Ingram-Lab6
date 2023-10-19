@@ -43,9 +43,48 @@ void printMatrix(const std::vector<std::vector<int> >& inputMatrix) {
 }
 
 std::vector<std::vector<int> > addMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
-    std::vector<std::vector<int> > newmatrix;
+    int numRows = matrix1.size();
+    int numCols = matrix1[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            newmatrix[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+
+    return newmatrix;
 }
 
+std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
+    int numRows = matrix1.size();
+    int numCols = matrix2[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            newmatrix[i][j] = matrix1[i][j] * matrix2[i][j];
+        }
+    }
+    return newmatrix;
+}
+
+std::vector<std::vector<int> > subtractMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
+    int numRows = matrix1.size();
+    int numCols = matrix1[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            newmatrix[i][j] = matrix1[i][j] - matrix2[i][j];
+        }
+    }
+
+    return newmatrix;
+}
 int main() {
     std::ifstream inputFile;
     std::string userFile;
@@ -74,9 +113,11 @@ int main() {
 
         twoDList.push_back(row);
     }
-    std::cout << j;
     std::vector<std::vector<int> > matrix1;
     std::vector<std::vector<int> > matrix2;
+    std::vector<std::vector<int> > matrixsum;
+    std::vector<std::vector<int> > matrixproduct;
+    std::vector<std::vector<int> > matrixdifference;
 
     // Call the separateMatrix function and receive the result
     std::pair<std::vector<std::vector<int> >, std::vector<std::vector<int> > > result = separateMatrix(twoDList, j);
@@ -90,13 +131,22 @@ int main() {
 
     std::cout << "Matrix A:\n";
     printMatrix(matrix1);
+    std::cout << "\n";
     std::cout << "Matrix B:\n";
     printMatrix(matrix2);
+    std::cout << "\n";
     std::cout << "Matrix Sum (A + B):\n";
-
+    matrixsum = addMatrix(matrix1, matrix2);
+    printMatrix(matrixsum);
+    std::cout << "\n";
     std::cout << "Matrix Product (A * B):\n";
-
-    std::cout << "Matrix Difference (A - B):/n";
+    matrixproduct = multiplyMatrix(matrix1, matrix2);
+    printMatrix(matrixproduct);
+    std::cout << "\n";
+    std::cout << "Matrix Difference (A - B):\n";
+    matrixdifference = subtractMatrix(matrix1, matrix2);
+    printMatrix(matrixdifference);
+    std::cout << "\n";
 
 
     inputFile.close();
