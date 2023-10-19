@@ -4,91 +4,13 @@
 #include <vector>
 #include <sstream>
 
-//TODO ADD PROTOTYPES ABOVE MAIN, ALL FUNCS BELOW
 
-std::pair<std::vector<std::vector<int> >, std::vector<std::vector<int> > > separateMatrix(const std::vector<std::vector<int> >& inputMatrix, int n) {
-    // Check if the input matrix contains enough rows
-    if (inputMatrix.size() % n != 0) {
-        std::cerr << "Your input is lopsided; ensure your total lines / 2 = your n." << std::endl;
-        return std::make_pair(std::vector<std::vector<int> >(), std::vector<std::vector<int> >());
-    }
-    std::vector<std::vector<int> > matrix1;
-    std::vector<std::vector<int> > matrix2;
-    // Initialize the resulting matrices with the same number of columns
-    matrix1 = std::vector<std::vector<int> >(n, std::vector<int>(inputMatrix[0].size()));
-    matrix2 = std::vector<std::vector<int> >(inputMatrix.size() - n, std::vector<int>(inputMatrix[0].size()));
+void printMatrix(const std::vector<std::vector<int> >& inputMatrix);
+std::pair<std::vector<std::vector<int> >, std::vector<std::vector<int> > > separateMatrix(const std::vector<std::vector<int> >& inputMatrix, int n);
+std::vector<std::vector<int> > addMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2);
+std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2);
+std::vector<std::vector<int> > subtractMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2);
 
-    // Copy the first n rows into matrix1 and the remaining rows into matrix2
-    for (int i = 0; i < n; ++i) {
-        for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
-            matrix1[i][j] = inputMatrix[i][j];
-        }
-    }
-
-    for (int i = n; i < inputMatrix.size(); ++i) {
-        for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
-            matrix2[i - n][j] = inputMatrix[i][j];
-        }
-    }
-return std::make_pair(matrix1, matrix2);
-}
-
-void printMatrix(const std::vector<std::vector<int> >& inputMatrix) {
-    for (size_t i = 0; i < inputMatrix.size(); ++i) {
-    for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
-        std::cout << inputMatrix[i][j] << " ";
-    }
-    std::cout << std::endl;
-}
-}
-
-std::vector<std::vector<int> > addMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
-    int numRows = matrix1.size();
-    int numCols = matrix1[0].size();
-
-    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
-
-    for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; ++j) {
-            newmatrix[i][j] = matrix1[i][j] + matrix2[i][j];
-        }
-    }
-
-    return newmatrix;
-}
-
-std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& A, const std::vector<std::vector<int> >& B) {
-    int numRowsA = A.size();
-    int numColsA = A[0].size();
-    int numColsB = B[0].size();
-
-    std::vector<std::vector<int> > newmatrix(numRowsA, std::vector<int>(numColsB, 0));
-
-    for (int i = 0; i < numRowsA; i++) {
-        for (int j = 0; j < numColsB; j++) {
-            for (int k = 0; k < numColsA; k++) {
-                newmatrix[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-
-    return newmatrix;
-}
-
-std::vector<std::vector<int> > subtractMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
-    int numRows = matrix1.size();
-    int numCols = matrix1[0].size();
-
-    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
-
-    for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; ++j) {
-            newmatrix[i][j] = matrix1[i][j] - matrix2[i][j];
-        }
-    }
-
-    return newmatrix;
-}
 int main() {
     std::ifstream inputFile;
     std::string userFile;
@@ -96,6 +18,7 @@ int main() {
 
     std::cout << "Enter the name of the file you want read: ";
     std::cin >> userFile;
+    std::cout << "\n";
 
     inputFile.open(userFile);
 
@@ -157,5 +80,86 @@ int main() {
     return 0;
 }
 
+std::pair<std::vector<std::vector<int> >, std::vector<std::vector<int> > > separateMatrix(const std::vector<std::vector<int> >& inputMatrix, int n) {
+    // Check if the input matrix contains enough rows
+    if (inputMatrix.size() % n != 0) {
+        std::cerr << "Your input is lopsided; ensure your total lines / 2 = your n." << std::endl;
+        return std::make_pair(std::vector<std::vector<int> >(), std::vector<std::vector<int> >());
+    }
+    std::vector<std::vector<int> > matrix1;
+    std::vector<std::vector<int> > matrix2;
+    // Initialize the resulting matrices with the same number of columns
+    matrix1 = std::vector<std::vector<int> >(n, std::vector<int>(inputMatrix[0].size()));
+    matrix2 = std::vector<std::vector<int> >(inputMatrix.size() - n, std::vector<int>(inputMatrix[0].size()));
 
+    // Copy the first n rows into matrix1 and the remaining rows into matrix2
+    for (int i = 0; i < n; ++i) {
+        for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
+            matrix1[i][j] = inputMatrix[i][j];
+        }
+    }
 
+    for (int i = n; i < inputMatrix.size(); ++i) {
+        for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
+            matrix2[i - n][j] = inputMatrix[i][j];
+        }
+    }
+return std::make_pair(matrix1, matrix2);
+}
+
+void printMatrix(const std::vector<std::vector<int> >& inputMatrix) {
+    for (size_t i = 0; i < inputMatrix.size(); ++i) {
+    for (size_t j = 0; j < inputMatrix[i].size(); ++j) {
+        std::cout << inputMatrix[i][j] << " ";
+    }
+    std::cout << std::endl;
+}
+}
+
+std::vector<std::vector<int> > addMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
+    int numRows = matrix1.size();
+    int numCols = matrix1[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            newmatrix[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+
+    return newmatrix;
+}
+
+std::vector<std::vector<int> > multiplyMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
+    int numRowsA = matrix1.size();
+    int numColsA = matrix1[0].size();
+    int numColsB = matrix2[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRowsA, std::vector<int>(numColsB, 0));
+
+    for (int i = 0; i < numRowsA; i++) {
+        for (int j = 0; j < numColsB; j++) {
+            for (int k = 0; k < numColsA; k++) {
+                newmatrix[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    return newmatrix;
+}
+
+std::vector<std::vector<int> > subtractMatrix(const std::vector<std::vector<int> >& matrix1, const std::vector<std::vector<int> >& matrix2) {
+    int numRows = matrix1.size();
+    int numCols = matrix1[0].size();
+
+    std::vector<std::vector<int> > newmatrix(numRows, std::vector<int>(numCols, 0));
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            newmatrix[i][j] = matrix1[i][j] - matrix2[i][j];
+        }
+    }
+
+    return newmatrix;
+}
